@@ -48,6 +48,24 @@ exports.fetchWebAndFilterDOM = (_crawlerData) => {
   return resolver;
 };
 
+exports.fetchCategoryList = (_elements) => {
+  logger.info(`fetchCategoryList: init`);
+  const categories = {};
+  _elements.find(`div.categories li`).each((_, elem) => {
+    categories[$(elem).find(`a`).text()] = {
+      url: $(elem).find(`a`).attr(`href`),
+      sum: parseInt($(elem).find(`span.small`).text()
+        .replace(/[^0-9$]/g, ``), 10),
+    };
+  });
+
+  const resolver = new Promise((resolve, reject) => {
+    logger.info(`fetchCategoryList: resolve`);
+    resolve(categories);
+  });
+  return resolver;
+};
+
 exports.checkCategoryUpperLimit = (_crawlerData) => {
   const crawlerData = _crawlerData;
   const categories = [];
